@@ -15,4 +15,19 @@ defmodule GenReport.ParserTest do
       assert response == true
     end
   end
+
+  describe "parse_many_files/1" do
+    test "parses multiple file" do
+      file_names = ["reports/part_1.csv", "reports/part_2.csv", "reports/part_3.csv"]
+
+      response =
+        file_names
+        |> Parser.parse_many_files()
+        |> length
+
+      expected_length_response = 30000
+
+      assert response == expected_length_response
+    end
+  end
 end
