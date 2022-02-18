@@ -20,6 +20,14 @@ defmodule GenReport.Parser do
     |> Enum.map(&parse_line(&1))
   end
 
+  def parse_many_files(filenames) do
+    filenames
+    |> Task.async_stream(&parse_file/1)
+    |> Enum.reduce([], fn {:ok, result}, acc ->
+      acc ++ result
+    end)
+  end
+
   defp parse_line(line) do
     line
     |> String.trim()

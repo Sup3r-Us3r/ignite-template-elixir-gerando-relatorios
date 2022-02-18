@@ -28,6 +28,22 @@ defmodule GenReport do
     )
   end
 
+  def build_from_many(filenames) when not is_list(filenames) do
+    {:error, "Formato inválido"}
+  end
+
+  def build_from_many(filenames) do
+    parsed_files =
+      filenames
+      |> Parser.parse_many_files()
+
+    Enum.reduce(
+      parsed_files,
+      report_acc(parsed_files),
+      &sum_values/2
+    )
+  end
+
   defp report_acc(parsed_file) do
     all_hours =
       parsed_file
